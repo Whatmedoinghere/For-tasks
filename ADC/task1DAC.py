@@ -18,30 +18,7 @@ def num2dac ( value ):
         if vector[i] == 1 :
             GPIO.output (chan_list [7 - i], 1)
 
-try:
-
-    flag = 1
-
-    while flag == 1:
-        print("input a number:")
-
-        value = int(input())
-
-        num2dac( value )
-
-        print("type 1 to another input number")
-
-        flag = input()
-
-except ValueError:
-    print("You did not type a number")
 
 
-except Exception:
-    print("You done something wrong")
 
-finally:
 
-    GPIO.output (chan_list, 0)
-
-    GPIO.cleanup ()
