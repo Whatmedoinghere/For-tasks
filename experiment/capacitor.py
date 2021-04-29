@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 
 capac_num = 17
 
+maxVolt = 3.3
+
 DAC_list = (26, 19, 13, 6, 5, 11, 9, 10)
 
 LEDS_list = (21, 20, 16, 12, 7, 8, 25, 24)
@@ -86,7 +88,7 @@ try:
     while True:
         digit_volt = adc()
         if ( digit_volt ) < 240:
-            listVolt.append(digit_volt * 3.3 / 255)
+            listVolt.append(digit_volt * maxVolt / 255)
             listTime.append(time.time - t_start)
         else:
             break
@@ -97,7 +99,7 @@ try:
     while True:
         digit_volt = adc()
         if ( digit_volt ) > 0:
-            listVolt.append(digit_volt * 3.3 / 255)
+            listVolt.append(digit_volt * maxVolt / 255)
             listTime.append(time.time - t_start)
         else:
             break
@@ -110,15 +112,15 @@ try:
     plt.ylabel('Напряжение, В')
     plt.show()
 
-    np.savetxt('data.txt', listVolt, fmt='%d')
+    np.savetxt('data.txt', listVolt, fmt = '%d')
 
     measure_amount = np.len(listTime)
 
     dT = t_stop / measure_amount
 
-    dV = listVolt[measure_amount - 1] / measure_amount
+    dV = maxVolt / 255
 
-    np.savetxt('settings', dT, dV, fmt='%d')
+    np.savetxt('settings', dT, dV, fmt = '%d')
 
 
 
