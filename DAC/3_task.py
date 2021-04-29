@@ -1,63 +1,64 @@
 import RPi.GPIO as GPIO
 import time
-import gpiofunc
 import numpy as np
 import matplotlib.pyplot as plt
-import math
+ 
 
-chan_list = [26, 19, 13, 6, 5, 11, 9, 10]
-
+chan_list = (26, 19, 13, 6, 5, 11, 9, 10)
 GPIO.setmode (GPIO.BCM)
+GPIO.setup (chan_list, GPIO.OUT)
+ 
+ 
+def decToBinList( decNumber ) :
+    vector = [0, 0, 0, 0, 0, 0, 0, 0]
 
-GPIO.setup   (chan_list, GPIO.OUT)
+    for i in range (0, 8) :
+        if (decNumber % 2) == 1 :
+            vector [i] = 1
+        decNumber = decNumber // 2
 
-GPIO.output (chan_list, 0)
+        if decNumber == 0 :
+            return vector
+ 
+def num2dac ( value ):
+    GPIO.output (chan_list, 0)
+    vector = decToBinList (value)
 
-Volt_amplitude = 3.256
-
-Num_volt = 3.256/256
-
+    for i in range (0, 8) :
+        if vector[i] == 1 :
+            GPIO.output (chan_list [7 - i], 1)
 
 try:
-    print ("Give the time of whole sin voltage")
-    timenew = int(input())
-
-    print ("Give the frequency")
-    frequency =float(input())
-
-    print ("Give the samoling frequency")
-    samplingFrequency =float(input())
+    worktime = 0
+    frequency = 0
+    samplingFrequency = 0
 
 
-    timearray = np.arange(0, timenew, 1/frequency)
-    amplitude = Volt_amplitude * np.sin(timearray - math.pi/2) / 2 + Volt_amplitude / 2
-    plt.plot(timearray, amplitude)
-    plt.title('Синус')
+    worktime = int(input ("Введите время работы: "))
+    frequency = int(input ("Введите частоту синусоидального сигнала: "))        
+    samplingFrequency = int(input ("Введите частоту сэмплироания: "))
+
+
+
+    freqarr = np.arange(0, worktime, 1/samplingFrequency)
+    ndarray = np.int32(np.round(127.5 - 127.5*np.cos(2 * np.pi * frequency * freqarr)))
+    plt.plot(freqarr, ndarray)
+    plt.title('Подаваемый сигнал')
     plt.xlabel('Время')
-    plt.ylabel('Амплитуда sin(time)')
+    plt.ylabel('Амплитуда сигнала')
     plt.show()
 
+    print("Напишите 1 если вас устраивает увиденное")
 
-    print ("Type 1 if sin graph satisfies you")
-
-    flag = input()
+    flag = int(input())
 
     if flag == 1:
-        newtime = np.arange(0, timenew, 1/samplingFrequency)
-        for timerunner in newtime:
-            gpiofunc.lightNumber_time( Num_volt * amplitude[newtime] , 1 / samplingFrequency)
-
-
-
-
-
-
-
-
+        for j in ndarray:
+            num2dac (j)
+            time.sleep (1 / samplingFrequency)
+        
 except Exception:
-    print("You done something wrong, or the coder is a moron")
-
+    print("Некая ошибка, выходим из программы.")
 finally:
     GPIO.output (chan_list, 0)
-
-    GPIO.cleanup ()
+    GPIO.cleanup (chan_list)
