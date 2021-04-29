@@ -38,14 +38,14 @@ try:
     plt.show()
 
 
-    # print("Type 1 if sin graph satisfies you")
+    print ("Type 1 if sin graph satisfies you")
 
-    # flag = input()
+    flag = input()
 
-    #if flag == 1:
-    newtime = np.arange(0, timenew, 1/samplingFrequency)
-    for timerunner in newtime:
-        gpiofunc.lightNumber_time( Num_volt * amplitude[newtime] , 1 / samplingFrequency)
+    if flag == 1:
+        newtime = np.arange(0, timenew, 1/samplingFrequency)
+        for timerunner in newtime:
+            gpiofunc.lightNumber_time( Num_volt * amplitude[newtime] , 1 / samplingFrequency)
 
 
 
