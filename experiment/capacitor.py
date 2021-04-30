@@ -7,6 +7,8 @@ capac_num = 17
 
 maxVolt = 3.3
 
+Comparator = 4
+
 DAC_list = (26, 19, 13, 6, 5, 11, 9, 10)
 
 LEDS_list = (21, 20, 16, 12, 7, 8, 25, 24)
@@ -19,7 +21,7 @@ GPIO.setup   (LEDS_list, GPIO.OUT)
 GPIO.output (DAC_list, 0)
 GPIO.output (LEDS_list, 0)
 
-GPIO.setup (4, GPIO.IN)
+GPIO.setup (Comparator, GPIO.IN)
 
 GPIO.setup   (capac_num, GPIO.OUT)
 
@@ -61,7 +63,7 @@ def adc ():
             num2dac( middle )
             time.sleep(0.001)
 
-            if GPIO.input(4) == 0 :
+            if GPIO.input(Comparator) == 0 :
                 middle -= 2**(N - 1)
             else:
                 middle += 2**(N - 1)
@@ -131,5 +133,5 @@ finally:
 
     GPIO.output (LEDS_list, 0)
     GPIO.output (DAC_list, 0)
-    GPIO.output (17, 0)
+    GPIO.output (capac_num, 0)
     GPIO.cleanup ()
