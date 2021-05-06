@@ -48,7 +48,7 @@ def num2leds ( number ) :
 
 def num2dac ( value ):
     GPIO.output (DAC_list, 0)
-    vector = gpiofunc.decToBinList (value)
+    vector = decToBinList (value)
 
     for i in range (0, 8) :
         if vector[i] == 1 :
@@ -91,7 +91,7 @@ try:
         digit_volt = adc()
         if ( digit_volt ) < 240:
             listVolt.append(digit_volt * maxVolt / 255)
-            listTime.append(time.time - t_start)
+            listTime.append(time.time() - t_start)
         else:
             break
 
@@ -102,7 +102,7 @@ try:
         digit_volt = adc()
         if ( digit_volt ) > 0:
             listVolt.append(digit_volt * maxVolt / 255)
-            listTime.append(time.time - t_start)
+            listTime.append(time.time() - t_start)
         else:
             break
 
