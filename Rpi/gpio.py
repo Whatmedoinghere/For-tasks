@@ -3,11 +3,10 @@ import time
 
 GPIO.setmode (GPIO.BCM)
 
-chan_list = [21, 20, 16, 12, 7, 8, 25, 24]
+chan_list = [26, 19, 13, 6, 5, 11, 9, 10]
 GPIO.setup   (chan_list, GPIO.OUT)
 
-gpioPWM = GPIO.PWM (21, 100)
-gpioPWM.start (1)
+
 
 def lightUp( ledNumber, period ) :
     GPIO.output  (chan_list [ledNumber], 1)
@@ -96,4 +95,6 @@ def SHIM( period ) :
 
 #gpioPWM.stop ()
 
-#GPIO.cleanup ()
+GPIO.output (chan_list, 0)
+
+GPIO.cleanup ()
